@@ -3,7 +3,12 @@ module Problems (
     myButLast,
     elementAt,
     myLength,
-    myReverse
+    myReverse,
+    isPalindrome,
+    check,
+    compress,
+    pack,
+    encode
 ) where
 
 -- P1 [1, 2, 3, 4]
@@ -57,3 +62,17 @@ compress (x:xs)
     where
         qtd = check([x] ++ xs)
 
+-- P9
+pack :: Eq a => [a] -> [[a]] -- aaaabaa -- a
+pack list
+    | length list == 0 = []
+    | qtd > 0 = [replicate qtd (head list)] ++ pack (drop qtd list)
+    where
+        qtd = check list
+
+-- P10 
+encode :: Eq a => [a] -> [(Int, a)]
+encode list = zip numbers letters
+    where
+        numbers = map myLength (pack list)
+        letters = map head (pack list)

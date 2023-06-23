@@ -1,1 +1,1 @@
-# ProgFuncional
+# Functional Programming
