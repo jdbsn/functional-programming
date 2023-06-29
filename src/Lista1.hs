@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module Lista1 (
    qtdIguais,
    calcularMedia,
@@ -20,8 +21,8 @@ module Lista1 (
    maiorElemento,
    consultarDicionario,
    converterListaDigitos,
-   del_posicao_n,
-   inserir_posicao_x,
+   delPosicao,
+   inserirPosicaoX,
    returnIndex,
    quicksort,
    mergeSortedList,
@@ -115,7 +116,7 @@ fact :: Int -> Int
 fact x = product [1..x]
 
 arranjo :: Int -> Int -> Int
-arranjo m n = (fact m) `div` (fact (m-n))
+arranjo m n = fact m `div` fact (m-n)
 
 -- 13
 posicaoMaior :: (Eq a, Num b) => a -> [a] -> b
@@ -136,19 +137,19 @@ consultarDicionario :: Int -> String
 consultarDicionario i = head [snd x | x <- dic_10, fst x == i]
 
 converterListaDigitos :: [Int] -> [String]
-converterListaDigitos lista = map (consultarDicionario) lista 
+converterListaDigitos lista = map consultarDicionario lista 
 
 -- 15
-del_posicao_n :: [Int] -> Int -> [Int]
-del_posicao_n (x:xs) n
+delPosicao :: [Int] -> Int -> [Int]
+delPosicao (x:xs) n
     | n == 0 = xs
-    | otherwise = [x] ++ del_posicao_n xs (n-1)
+    | otherwise = x : delPosicao xs (n-1)
 
 -- 16
-inserir_posicao_x :: [Int] -> Int -> Int -> [Int]
-inserir_posicao_x (x:xs) p n
-    | p == 0 = [n] ++ [x] ++ xs
-    | otherwise = [x] ++ inserir_posicao_x xs (p-1) n
+inserirPosicaoX :: [Int] -> Int -> Int -> [Int]
+inserirPosicaoX (x:xs) p n
+    | p == 0 = n : x : xs
+    | otherwise = x : inserirPosicaoX xs (p-1) n
 
 -- 17
 returnIndex :: Int -> [Int] -> Int
@@ -157,6 +158,7 @@ returnIndex p (x:xs)
     | otherwise = returnIndex (p-1) xs
 
 -- 18
+quicksort :: Ord a => [a] -> [a]
 quicksort [] = []
 quicksort (x:xs) = quicksort menores ++ [x] ++ quicksort maiores
                 where
@@ -170,7 +172,7 @@ mergeSortedList a b = quicksort (a ++ b)
 verificaLista :: Int -> [Int] -> Bool
 verificaLista n (x:xs)
     | n == x = True
-    | length xs == 0 = False
+    | null xs = False
     | otherwise = verificaLista n xs
 
 -- It's necessary to use "_ []" in case the last element of L2 is contained in L1. In that case,
@@ -178,14 +180,14 @@ verificaLista n (x:xs)
 intersecaoLista :: [Int] -> [Int] -> [Int]
 intersecaoLista _ [] = []
 intersecaoLista listaA (x:xs)
-    | verificaLista x listaA == True = [x] ++ intersecaoLista listaA xs
-    | length xs == 0 = []
+    | verificaLista x listaA = x : intersecaoLista listaA xs
+    | null xs = []
     | otherwise = intersecaoLista listaA xs
 
 -- 20
 checar :: String -> Int -> Int
 checar (x:xs) aux
-    | length xs == 0 = aux
+    | null xs = aux
     | x == head xs = checar xs aux+1
     | x /= head xs = aux
 
@@ -193,18 +195,18 @@ encode :: String -> String
 encode [] = []
 encode (x:xs)
     | valorChecagem > 3 = "!" ++ show valorChecagem ++ [x] ++ encode (drop (valorChecagem-1) xs)
-    | valorChecagem <= 3 = [x] ++ encode xs
-    | length xs == 0 = []
+    | valorChecagem <= 3 = x : encode xs
+    | null xs = []
     where
-        valorChecagem = checar([x] ++ xs) 1
+        valorChecagem = checar(x : xs) 1
 
 -- 21
 charToInt :: Char -> Int
-charToInt x = (read ([x]) :: Int)
+charToInt x = read [x] :: Int
 
 decode :: String -> String
 decode [] = []
 decode (x:xs)
     | x == '!' = replicate (charToInt (xs !! 0)) (xs !! 1) ++ decode (drop 2 xs)
-    | length xs == 0 = [x]
-    | otherwise = [x] ++ decode xs
+    | null xs = [x]
+    | otherwise = x : decode xs

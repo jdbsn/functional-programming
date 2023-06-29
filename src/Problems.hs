@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module Problems (
     myLast,
     myButLast,
@@ -15,7 +16,7 @@ module Problems (
 myLast :: Eq a => [a] -> a
 myLast [] = error "Lista vazia."
 myLast (x:xs)
-    | length xs == 0 = x
+    | null xs = x
     | otherwise = myLast xs
 
 -- P2
@@ -33,14 +34,14 @@ elementAt (x:xs) k
     | otherwise = elementAt xs (k-1)
 
 -- P4 [1, 2, 3]
-myLength :: Eq a => [a] -> Int
+myLength :: [a] -> Int
 myLength list = sum [1 | _ <- list, otherwise]
 
 -- P5 [1, 2, 3] -> [3, 2, 1]
 myReverse :: Eq a => [a] -> [a]
 myReverse list
-    | length list == 1 = [(head list)]
-    | otherwise = [myLast list] ++ myReverse (init list)
+    | length list == 1 = [head list]
+    | otherwise = myLast list : myReverse (init list)
 
 -- P6 [1, 2, 3, 4] -> [1, 2] [3, 4] a na 
 isPalindrome :: Eq a => [a] -> Bool
@@ -49,24 +50,24 @@ isPalindrome list = list == myReverse list
 -- P8 aaaa
 check :: Eq a => [a] -> Int
 check (x:xs)
-    | length xs == 0 = 1
+    | null xs = 1
     | x == head xs = 1 + check xs 
     | otherwise = 1
 
 compress :: Eq a => [a] -> [a]
 compress [] = []
 compress (x:xs)
-    | qtd >= 2 = [x] ++ compress (drop (qtd - 1) xs)
-    | qtd < 2 = [x] ++ compress xs
-    | length xs == 0 = []
+    | qtd >= 2 = x : compress (drop (qtd - 1) xs)
+    | qtd < 2 = x : compress xs
+    | null xs = []
     where
-        qtd = check([x] ++ xs)
+        qtd = check(x : xs)
 
 -- P9
 pack :: Eq a => [a] -> [[a]] -- aaaabaa -- a
 pack list
-    | length list == 0 = []
-    | qtd > 0 = [replicate qtd (head list)] ++ pack (drop qtd list)
+    | null list = []
+    | qtd > 0 = replicate qtd (head list) : pack (drop qtd list)
     where
         qtd = check list
 
