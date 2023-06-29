@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      AtividadeE1
       Lib
       Lista1
       Problems
