@@ -29,6 +29,7 @@ library
       Lib
       Lista1
       Problems
+      Recursao
   other-modules:
       Paths_ProgFuncional
   hs-source-dirs:
