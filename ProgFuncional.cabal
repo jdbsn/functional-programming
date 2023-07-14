@@ -28,6 +28,7 @@ library
       AtividadeE1
       Lib
       Lista1
+      ListaAltaOrdem
       Problems
       Recursao
   other-modules:

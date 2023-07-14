@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module Problems (
     myLast,
     myButLast,
@@ -63,7 +64,7 @@ compress (x:xs)
         qtd = check(x : xs)
 
 -- P9
-pack :: Eq a => [a] -> [[a]] -- aaaabaa -- a
+pack :: Eq a => [a] -> [[a]]
 pack list
     | null list = []
     | qtd > 0 = replicate qtd (head list) : pack (drop qtd list)
