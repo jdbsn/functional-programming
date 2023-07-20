@@ -74,16 +74,16 @@ verificarElemento e (x:xs)
 
 -- Q6
 merge :: Ord a => [a] -> [a] -> [a]
+merge [] [] = []
 merge list [] = list
 merge [] list = list
 merge (x:xs) (y:ys)
-    | x == y = x : y : merge xs ys
     | x > y = y : merge (x:xs) ys
-    | x < y = x : merge xs (y:ys)
+    | otherwise = x : merge xs (y:ys)
 
 -- Q7
 metades :: [a] -> ([a], [a])
-metades list = splitAt (div (length list) 2) list
+metades list = splitAt (length list `div`  2) list
 
 mergesort :: Ord a => [a] -> [a]
 mergesort [] = []

@@ -12,8 +12,14 @@ module ListaAltaOrdem (
     any2,
     takeWhile2,
     dropWhile2,
+    mapFold,
+    filterFold,
     dec2int,
-    altMap
+    mapUnfold,
+    iterateUnfold,
+    altMap,
+    curry1,
+    uncurry1
 ) where
 import Recursao (mergesort)
 
@@ -75,9 +81,29 @@ dropWhile2 f (x:xs)
     | f x = dropWhile2 f xs
     | otherwise = x:xs
 
+-- Q7
+mapFold :: (a -> b) -> [a] -> [b]
+mapFold _ [] = []
+mapFold f (x:xs) = foldr (\y ys -> (f y) : ys) [] xs
+
+filterFold :: (a -> Bool) -> [a] -> [a]
+filterFold f (x:xs) = foldr (\x xs -> if f x then x:xs else xs) [] xs
+
 -- Q8
 dec2int :: [Int] -> Int
-dec2int lista = read (foldl (++) "" (map show lista)) :: Int 
+dec2int lista = read (foldl (++) "" (map show lista)) :: Int
+
+-- Q9
+unfold :: (t -> Bool) -> (t -> a) -> (t -> t) -> t -> [a]
+unfold p h t x
+       | p x = []
+       | otherwise = h x : unfold p h t (t x)
+
+mapUnfold :: Eq b => (b -> a) -> [b] -> [a]
+mapUnfold f = unfold (== []) (f . head) tail
+
+iterateUnfold :: (Ord a, Num a) => (a -> a) -> a -> [a]
+iterateUnfold = unfold (<= 0) id
 
 -- Q10
 altMap :: (a -> b) -> (a -> b) -> [a] -> [b]
@@ -85,3 +111,10 @@ altMap _ _ [] = []
 altMap f g (x:xs)
     | even (length xs) = f x : altMap g f xs
     | otherwise = f x : altMap g f xs
+
+-- Q11
+curry1 :: ((a, b) -> c) -> a -> b -> c
+curry1 f x y = f (x,y)
+
+uncurry1 :: (t1 -> t2 -> t3) -> (t1, t2) -> t3
+uncurry1 f (x,y) = f x y

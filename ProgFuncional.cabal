@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       AtividadeE1
+      AtividadeE2
       Lib
       Lista1
       ListaAltaOrdem
