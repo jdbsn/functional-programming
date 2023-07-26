@@ -83,11 +83,10 @@ dropWhile2 f (x:xs)
 
 -- Q7
 mapFold :: (a -> b) -> [a] -> [b]
-mapFold _ [] = []
-mapFold f (x:xs) = foldr (\y ys -> (f y) : ys) [] xs
+mapFold f = foldr (\x y -> f x : y) []
 
 filterFold :: (a -> Bool) -> [a] -> [a]
-filterFold f (x:xs) = foldr (\x xs -> if f x then x:xs else xs) [] xs
+filterFold f = foldr (\x xs -> if f x then x:xs else xs) []
 
 -- Q8
 dec2int :: [Int] -> Int

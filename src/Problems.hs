@@ -9,7 +9,13 @@ module Problems (
     check,
     compress,
     pack,
-    encode
+    encode,
+    dupli,
+    repli,
+    dropEvery,
+    split',
+    slice,
+    removeAt
 ) where
 
 -- P1 [1, 2, 3, 4]
@@ -47,11 +53,11 @@ myReverse list
 isPalindrome :: Eq a => [a] -> Bool
 isPalindrome list = list == myReverse list
 
--- P8 aaaa
+-- P8
 check :: Eq a => [a] -> Int
 check (x:xs)
     | null xs = 1
-    | x == head xs = 1 + check xs 
+    | x == head xs = 1 + check xs
     | otherwise = 1
 
 compress :: Eq a => [a] -> [a]
@@ -61,7 +67,7 @@ compress (x:xs)
     | qtd < 2 = x : compress xs
     | null xs = []
     where
-        qtd = check(x : xs)
+        qtd = check (x : xs)
 
 -- P9
 pack :: Eq a => [a] -> [[a]]
@@ -77,3 +83,35 @@ encode list = zip numbers letters
     where
         numbers = map myLength (pack list)
         letters = map head (pack list)
+
+-- P14
+dupli :: [a] -> [a]
+dupli [] = []
+dupli (x:xs) = x:x:dupli xs
+
+-- P15
+repli :: [a] -> Int -> [a]
+repli list n = concat (map (replicate n) list)
+
+-- P16
+dropEvery :: [a] -> Int -> [a]
+dropEvery (x:xs) n
+    | null xs = [x]
+    | n == 1 = dropEvery xs 3
+    | otherwise = x : dropEvery xs (n-1)
+
+-- P17
+split' :: [a] -> Int -> ([a], [a])
+split' list n = (take n list, drop n list)
+
+-- P18
+slice :: [a] -> Int -> Int -> [a]
+slice list x y = take (y-x+1) (drop (x-1) list)
+
+-- 
+
+-- P20
+removeAt :: Eq a => Int -> [a] -> (a, [a])
+removeAt i list = (element, filter (/=element) list)
+    where
+        element = list !! (i-1)
