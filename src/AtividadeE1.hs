@@ -3,7 +3,8 @@ module AtividadeE1 (
     retornarSubString,
     split,
     aplicaRecursivo,
-    aplicaFuncao
+    aplicaFuncao,
+    subString
 ) where
 
 -- 1
@@ -15,11 +16,11 @@ module AtividadeE1 (
 -- 2
 aplicaRecursivo :: (a -> a) -> [a] -> [a]
 aplicaRecursivo f (x:xs)
-    | null xs = [(\x -> f x) x]
-    | otherwise = (\x -> f x) x : aplicaRecursivo f xs
+    | null xs = [f x]
+    | otherwise = f x : aplicaRecursivo f xs
 
 aplicaFuncao :: (a -> b) -> [a] -> [b]
-aplicaFuncao f lista = map (\x -> f x) lista
+aplicaFuncao f lista = map f lista
 
 -- 3
 retornarSubString :: Int -> Int -> String -> String
@@ -28,6 +29,11 @@ retornarSubString inicio fim (x:xs)
     | inicio /= 0 = retornarSubString (inicio - inicio) (fim-inicio) (drop (inicio - 1) (x:xs))
     | fim == 0 = [x]
     | otherwise = x : retornarSubString inicio (fim-1) xs
+
+subString :: String -> Int -> Int -> String
+subString string i f
+	| i > f = error "O inicio não pode ser maior que o fim"
+	| otherwise = take (f-i+1) (drop i string) 
 
 -- 4
 split :: String -> Char -> [String]

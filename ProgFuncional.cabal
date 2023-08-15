@@ -31,7 +31,9 @@ library
       Lista1
       ListaAltaOrdem
       Problems
+      Prova1
       Recursao
+      Tipos
   other-modules:
       Paths_ProgFuncional
   hs-source-dirs:

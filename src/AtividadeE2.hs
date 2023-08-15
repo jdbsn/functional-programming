@@ -2,11 +2,14 @@
 module AtividadeE2 (
     funcionarios,
     prefixos,
+    checaPrimo,
     primos,
+    primosAlt,
     tailIf,
     tailGuard,
     tailPadrao,
-    novoMap
+    zip',
+    zipWith'
 ) where
 
 -- João Neto
@@ -36,6 +39,8 @@ primos inicio fim
     | inicio > fim = filter checaPrimo [fim..inicio]
     | otherwise = filter checaPrimo [inicio..fim]
 
+primosAlt inicio fim = [x | x <- [inicio..fim], checaPrimo x]
+
 -- Q4
 -- a)
 tailIf :: [a] -> [a]
@@ -53,7 +58,11 @@ tailPadrao [] = []
 tailPadrao l = drop 1 l
 
 -- Q5
-novoMap :: [a -> a] -> [a] -> [a]
-novoMap (f:fs) l
-    | null fs = map f l
-    | otherwise = novoMap fs (map f l)
+zip' [] _ = []
+zip' _ [] = []
+zip' (x:xs) (y:ys) = (x,y) : zip xs ys
+
+zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith' _ [] _ = []
+zipWith' _ _ [] = []
+zipWith' f (x:xs) (y:ys) = f x y : zipWith' f xs ys
